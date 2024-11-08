@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 	  int response_time=i-(running->arrival_time);
 	  total_response_time+=response_time;
 	}
-	int timeRemaining=running->time_left-quantum_length;
+	int timeRemaining=running->time_left-quantum_length-1;
 	if(timeRemaining<=0){
 	  finishTime=i+running->time_left;
 	  running->time_left=0;
