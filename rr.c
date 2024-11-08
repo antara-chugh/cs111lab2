@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
   int finishTime=0;
   struct process* running=NULL;
   int num_added=0;
-  for(int i=0; (num_added==size  && TAILQ_EMPTY(&list)) ; i++){
+  for(int i=0; (num_added<size  ||  !TAILQ_EMPTY(&list)) ; i++){
   
     for(u32 k=0; k<size; k++){
       if(data[k].added==0){
@@ -186,11 +186,11 @@ int main(int argc, char *argv[])
       running=TAILQ_FIRST(&list);
       if(running!=NULL){
 	if(running->time_left==running->burst_time){
-	  int response_time=i-running->arrival_time;
+	  int response_time=i-(running->arrival_time);
 	  total_response_time+=response_time;
 	}
 	int timeRemaining=running->time_left-quantum_length;
-	if(timeRemaining<0){
+	if(timeRemaining<=0){
 	  finishTime=i+running->time_left;
 	  running->time_left=0;
 	  
@@ -205,14 +205,14 @@ int main(int argc, char *argv[])
     }
 
     if(running!=NULL){
-
+      
       if(i==finishTime){
 	
-	if(running->burst_time==0){
+	if(running->time_left<=0){
 	  u32  wait_time=i-(running->arrival_time)-(running->burst_time);
 	  total_waiting_time+=wait_time;
 	  TAILQ_REMOVE(&list, running, pointers);
-	  free(running);
+	  
 	  running=NULL;
 	  
 	}else{
