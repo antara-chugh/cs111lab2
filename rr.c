@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
 	  finishTime=i+running->time_left;
 	  running->time_left=0;
 	}else{
-	  finishTimei+quantum_length;
+	  finishTime=i+quantum_length;
 	  running->time_left=running->time_left-quantum_length;
 	}
 	
