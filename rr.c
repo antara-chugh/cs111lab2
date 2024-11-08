@@ -189,15 +189,12 @@ int main(int argc, char *argv[])
 	  int response_time=i-(running->arrival_time);
 	  total_response_time+=response_time;
 	}
-	int timeRemaining=running->time_left-quantum_length;
-	if(timeRemaining<=0){
-	  finishTime=i+running->time_left-1;
+	if(running->time_left<=quantum_length){
+	  finishTime=i+running->time_left;
 	  running->time_left=0;
-	  
-	  
 	}else{
-	  running->time_left=timeRemaining;
-	  finishTime=i+quantum_length-1;
+	  finishTimei+quantum_length;
+	  running->time_left=running->time_left-quantum_length;
 	}
 	
 	printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
@@ -206,10 +203,10 @@ int main(int argc, char *argv[])
       }
     }
 
-    if(running!=NULL){
+    if(running!=NULL&& i==finishTime){
       
 
-      if(i==finishTime){
+      
 	
 	if(running->time_left==0){
 	  u32  wait_time=i-(running->arrival_time)-(running->burst_time);
@@ -224,7 +221,7 @@ int main(int argc, char *argv[])
 	  running=NULL;
 	  
 	}
-      }
+      
 
 
     }
