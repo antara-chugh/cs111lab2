@@ -18,7 +18,7 @@ struct process
   u32 arrival_time;
   u32 burst_time;
   u32 time_left;
-  
+  u32 added;
 
   TAILQ_ENTRY(process) pointers;
 
@@ -154,10 +154,12 @@ int main(int argc, char *argv[])
   init_processes(argv[1], &data, &size);
 
   u32 quantum_length = next_int_from_c_str(argv[2]);
-
+  for(u32  k=0; k<size; k++){
+    data[k].added=0;
+  }
   struct process_list list;
   TAILQ_INIT(&list);
-
+ 
   u32 total_waiting_time = 0;
   u32 total_response_time = 0;
 
@@ -165,26 +167,18 @@ int main(int argc, char *argv[])
   
   int finishTime=0;
   struct process* running=NULL;
+  int num_added=0;
+  for(int i=0; (num_added==size  && TAILQ_EMPTY(&list)) ; i++){
   
-  for(int i=0; (data==NULL && TAILQ_EMPTY(&list)) ; i++){
-    struct process* current=data;
-    struct process* prev=NULL;
-    while(current!=NULL){
-      if(current->arrival_time==i){
-	current->time_left=current->burst_time;
-	TAILQ_INSERT_TAIL(&list, (&current), pointers);
-	if(prev==NULL){
-	  data=current->next;
-	}else{
-	  prev->next=current->next;
-	}
-	struct process *temp=current;
-	current=current->next;
-	free(temp);
+    for(u32 k=0; k<size; k++){
+      if(data[k].added==0){
 	
-      }else{
-	prev=current;
-	current=current->next;
+      if(data[k].arrival_time==i){
+	data[k].time_left=data[k].burst_time;
+	data[k].added=1;
+	TAILQ_INSERT_TAIL(&list,&(data[k]), pointers);
+	num_added++;
+      }
       }
 
     }
@@ -213,7 +207,7 @@ int main(int argc, char *argv[])
     if(running!=NULL){
 
       if(i==finishTime){
-	processSet=False;
+	
 	if(running->burst_time==0){
 	  u32  wait_time=i-(running->arrival_time)-(running->burst_time);
 	  total_waiting_time+=wait_time;
