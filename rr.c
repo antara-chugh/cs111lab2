@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 	  running->time_left=timeRemaining;
 	  finishTime=i+quantum_length-1;
 	}
-	TAILQ_REMOVE((&list), running, pointers);
+	
 	printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
 
 	
@@ -214,12 +214,12 @@ int main(int argc, char *argv[])
 	if(running->time_left==0){
 	  u32  wait_time=i-(running->arrival_time)-(running->burst_time);
 	  total_waiting_time+=wait_time;
-	  
+	  TAILQ_REMOVE(&list, running, pointers);
 	  
 	  running=NULL;
 	  
 	}else{
-	  
+	  TAILQ_REMOVE(&list, running, pointers);
 	  TAILQ_INSERT_TAIL(&list, running, pointers);
 	  running=NULL;
 	  
