@@ -190,10 +190,10 @@ int main(int argc, char *argv[])
 	  total_response_time+=response_time;
 	}
 	if(running->time_left<=quantum_length){
-	  finishTime=i+running->time_left;
+	  finishTime=i+running->time_left-1;
 	  running->time_left=0;
 	}else{
-	  finishTime=i+quantum_length;
+	  finishTime=i+quantum_length-1;
 	  running->time_left=running->time_left-quantum_length;
 	}
 	
