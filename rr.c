@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 	  
 	}else{
 	  running->time_left=timeRemaining;
-	  finishTime=i+quantum_length;
+	  finishTime=i+quantum_length-1;
 	}
 	TAILQ_REMOVE((&list), running, pointers);
 	printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
