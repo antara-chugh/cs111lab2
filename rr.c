@@ -1,4 +1,4 @@
-#incAlude <errno.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -194,10 +194,10 @@ int main(int argc, char *argv[])
 	time_to_quantum=0;
       }
     }
-    if(running!==NULL){
+    if(running!=NULL){
       running->time_left=running->time_left-1;
       time_to_quantum++;
-      if(running->time_left==0 || time_to_quatum==quantum_length){
+      if(running->time_left==0 || time_to_quantum==quantum_length){
       if(running->time_left>0){
 	//remove and add it back to queue
 	TAILQ_REMOVE(&list, running, pointers);
