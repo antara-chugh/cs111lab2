@@ -184,19 +184,8 @@ int main(int argc, char *argv[])
 
     }
     
-    if(running==NULL){
-      running=TAILQ_FIRST(&list);
-      if(running!=NULL){
-	if(running->time_left==running->burst_time){
-	  int response_time=i-(running->arrival_time);
-	  total_response_time+=response_time;
-	}
-	time_to_quantum=0;
-      }
-    }
+    
     if(running!=NULL){
-      running->time_left=running->time_left-1;
-      time_to_quantum++;
       if(running->time_left==0 || time_to_quantum==quantum_length){
       if(running->time_left>0){
 	//remove and add it back to queue
@@ -210,8 +199,20 @@ int main(int argc, char *argv[])
       }
       running=NULL;
       }
+      running->time_left=running->time_left-1;
+      time_to_quantum++;
 
     }
+    
+      running=TAILQ_FIRST(&list);
+      if(running!=NULL){
+        if(running->time_left==running->burst_time){
+          int response_time=i-(running->arrival_time);
+          total_response_time+=response_time;
+        }
+        time_to_quantum=0;
+      }
+    
     
 	
 	//printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
