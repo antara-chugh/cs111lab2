@@ -1,4 +1,4 @@
-#include <errno.h>
+#incAlude <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -168,6 +168,7 @@ int main(int argc, char *argv[])
   int finishTime=0;
   struct process* running=NULL;
   int num_added=0;
+  int time_to_quantum=0;
   for(int i=0; (num_added<size  ||  !TAILQ_EMPTY(&list)) ; i++){
   
     for(u32 k=0; k<size; k++){
@@ -182,6 +183,7 @@ int main(int argc, char *argv[])
       }
 
     }
+    
     if(running==NULL){
       running=TAILQ_FIRST(&list);
       if(running!=NULL){
@@ -189,45 +191,36 @@ int main(int argc, char *argv[])
 	  int response_time=i-(running->arrival_time);
 	  total_response_time+=response_time;
 	}
-	if(running->time_left<=quantum_length){
-	  finishTime=i+running->time_left-1;
-	  running->time_left=0;
-	}else{
-	  finishTime=i+quantum_length-1;
-	  running->time_left=running->time_left-quantum_length;
-	}
+	time_to_quantum=0;
+      }
+    }
+    if(running!==NULL){
+      running->time_left=running->time_left-1;
+      time_to_quantum++;
+      if(running->time_left==0 || time_to_quatum==quantum_length){
+      if(running->time_left>0){
+	//remove and add it back to queue
+	TAILQ_REMOVE(&list, running, pointers);
+	TAILQ_INSERT_TAIL(&list, running, pointers);
+      }else{
+	//remove from queue
+	TAILQ_REMOVE(&list, running, pointers);
+	int waitingTime=i-running->arrival_time-running->burst_time;
+	total_waiting_time+=waitingTime;
+      }
+      }
+
+    }
+    
 	
 	//printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
 
 	
       }
-    }
-
-    if(running!=NULL&& i==finishTime){
-      
-
-      
-	
-	if(running->time_left==0){
-	  u32  wait_time=i-(running->arrival_time)-(running->burst_time)+1;
-	  total_waiting_time+=wait_time;
-	  TAILQ_REMOVE(&list, running, pointers);
-	  
-	  running=NULL;
-	  
-	}else{
-	  TAILQ_REMOVE(&list, running, pointers);
-	  TAILQ_INSERT_TAIL(&list, running, pointers);
-	  running=NULL;
-	  
-	}
-      
-
-
-    }
     
     
-  }
+    
+  
   
   /* End of "Your code here" */
 
