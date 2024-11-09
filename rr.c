@@ -209,7 +209,7 @@ int main(int argc, char *argv[])
       
 	
 	if(running->time_left==0){
-	  u32  wait_time=i-(running->arrival_time)-(running->burst_time);
+	  u32  wait_time=i-(running->arrival_time)-(running->burst_time)+1;
 	  total_waiting_time+=wait_time;
 	  TAILQ_REMOVE(&list, running, pointers);
 	  
