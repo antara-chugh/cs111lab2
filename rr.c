@@ -208,6 +208,7 @@ int main(int argc, char *argv[])
 	int waitingTime=i-running->arrival_time-running->burst_time;
 	total_waiting_time+=waitingTime;
       }
+      running=NULL;
       }
 
     }
