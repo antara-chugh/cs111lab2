@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
       }
       running=NULL;
       }
-      running->time_left=running->time_left-1;
+      
       
 
     }
