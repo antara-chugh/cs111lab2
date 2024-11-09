@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 	  running->time_left=running->time_left-quantum_length;
 	}
 	
-	printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
+	//printf("Time %d: Process %u runs for %d units\n", i, running->pid, running->time_left);
 
 	
       }
